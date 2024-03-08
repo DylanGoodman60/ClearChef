@@ -22,25 +22,13 @@ struct RecipeInfo: View {
     @State private var prepTime = Date.now
 
     @State private var selectedFlavor: Flavor = .chocolate
-    
-    var body: some View {
-        Form {
-            if editMode?.wrappedValue.isEditing == true {
-                PhotosSelector()
-                TextField("Description", text: $description, axis: .vertical)
-                Picker("Flavor", selection: $selectedFlavor) {
-                    ForEach(Flavor.allCases) { flavor in
-                        Text(flavor.rawValue.capitalized)
-                    }
-                }
-            } else {
-                Image(systemName: "birthday.cake")
-                    .resizable()
-                Text(description)
-                HStack {
-                    Text("Category")
-                    Spacer()
-                    Text(selectedFlavor.rawValue)
+
+    var previewForm: some View {
+        Form {PhotosSelector()
+            TextField("Description", text: $description, axis: .vertical)
+            Picker("Flavor", selection: $selectedFlavor) {
+                ForEach(Flavor.allCases) { flavor in
+                    Text(flavor.rawValue.capitalized)
                 }
             }
             HStack {
@@ -58,7 +46,18 @@ struct RecipeInfo: View {
                 Text("3 tbsp peanuts")
             }
         }
-        .navigationTitle(recipe.id)
+    }
+    
+    var choice: some View {
+        if editMode?.wrappedValue.isEditing == true {
+            AnyView(AddEditRecipe(recipe: recipe))
+        } else {
+            AnyView(previewForm)
+        }
+    }
+
+    var body: some View {
+        choice.navigationTitle(recipe.id)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 EditButton()
@@ -77,5 +76,5 @@ struct RecipeInfo: View {
     }
 }
 
-func nothing() {}
+
 

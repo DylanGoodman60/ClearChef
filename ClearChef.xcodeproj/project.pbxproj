@@ -18,6 +18,7 @@
 		07627B2A2B9943EA0029415D /* RecipeViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07627B292B9943EA0029415D /* RecipeViewer.swift */; };
 		07627B2E2B9953010029415D /* RecipeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07627B2D2B9953010029415D /* RecipeInfo.swift */; };
 		07B4F94C2B9AAA5E00B45C5C /* PhotosSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B4F94B2B9AAA5E00B45C5C /* PhotosSelector.swift */; };
+		46BD66D22B9BC9E4008DFEF5 /* AddEditRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BD66D12B9BC9E4008DFEF5 /* AddEditRecipe.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		07627B2D2B9953010029415D /* RecipeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeInfo.swift; sourceTree = "<group>"; };
 		07627B2F2B9955A80029415D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.markdown; };
 		07B4F94B2B9AAA5E00B45C5C /* PhotosSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosSelector.swift; sourceTree = "<group>"; };
+		46BD66D12B9BC9E4008DFEF5 /* AddEditRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditRecipe.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 				07627B292B9943EA0029415D /* RecipeViewer.swift */,
 				07627B2D2B9953010029415D /* RecipeInfo.swift */,
 				07B4F94B2B9AAA5E00B45C5C /* PhotosSelector.swift */,
+				46BD66D12B9BC9E4008DFEF5 /* AddEditRecipe.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -181,6 +184,7 @@
 				07627B242B9931420029415D /* Recipe.swift in Sources */,
 				07627B122B9926AF0029415D /* ContentView.swift in Sources */,
 				07627B282B9943040029415D /* AddRecipe.swift in Sources */,
+				46BD66D22B9BC9E4008DFEF5 /* AddEditRecipe.swift in Sources */,
 				07B4F94C2B9AAA5E00B45C5C /* PhotosSelector.swift in Sources */,
 				07627B102B9926AF0029415D /* ClearChefApp.swift in Sources */,
 				07627B1F2B9928ED0029415D /* RecipeRow.swift in Sources */,
