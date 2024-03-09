@@ -18,6 +18,7 @@
 		07627B2A2B9943EA0029415D /* RecipeViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07627B292B9943EA0029415D /* RecipeViewer.swift */; };
 		07627B2E2B9953010029415D /* RecipeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07627B2D2B9953010029415D /* RecipeInfo.swift */; };
 		07B4F94C2B9AAA5E00B45C5C /* PhotosSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B4F94B2B9AAA5E00B45C5C /* PhotosSelector.swift */; };
+		4649F22B2B9CEAF700A1D245 /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4649F22A2B9CEAF700A1D245 /* Ingredient.swift */; };
 		46BD66D22B9BC9E4008DFEF5 /* AddEditRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BD66D12B9BC9E4008DFEF5 /* AddEditRecipe.swift */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +36,7 @@
 		07627B2D2B9953010029415D /* RecipeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeInfo.swift; sourceTree = "<group>"; };
 		07627B2F2B9955A80029415D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.markdown; };
 		07B4F94B2B9AAA5E00B45C5C /* PhotosSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosSelector.swift; sourceTree = "<group>"; };
+		4649F22A2B9CEAF700A1D245 /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredient.swift; sourceTree = "<group>"; };
 		46BD66D12B9BC9E4008DFEF5 /* AddEditRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditRecipe.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				07627B232B9931420029415D /* Recipe.swift */,
+				4649F22A2B9CEAF700A1D245 /* Ingredient.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -189,6 +192,7 @@
 				07627B102B9926AF0029415D /* ClearChefApp.swift in Sources */,
 				07627B1F2B9928ED0029415D /* RecipeRow.swift in Sources */,
 				07627B2E2B9953010029415D /* RecipeInfo.swift in Sources */,
+				4649F22B2B9CEAF700A1D245 /* Ingredient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,7 +326,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ClearChef/Preview Content\"";
-				DEVELOPMENT_TEAM = WBU4S3K2ST;
+				DEVELOPMENT_TEAM = TEK6LH5Z62;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -336,7 +340,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = io.github.dylangoodman60.ClearChef;
+				PRODUCT_BUNDLE_IDENTIFIER = io.newmant.ClearChef;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -352,7 +356,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ClearChef/Preview Content\"";
-				DEVELOPMENT_TEAM = WBU4S3K2ST;
+				DEVELOPMENT_TEAM = TEK6LH5Z62;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -366,7 +370,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = io.github.dylangoodman60.ClearChef;
+				PRODUCT_BUNDLE_IDENTIFIER = io.newmant.ClearChef;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
