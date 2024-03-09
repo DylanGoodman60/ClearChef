@@ -6,3 +6,15 @@
 //
 
 import Foundation
+import SwiftUI
+
+struct Ingredient: Identifiable, Hashable {
+    var id = UUID()
+    var title: String
+}
+
+struct Direction: Identifiable, Hashable {
+    var id = UUID()
+    var title: String
+}
+
