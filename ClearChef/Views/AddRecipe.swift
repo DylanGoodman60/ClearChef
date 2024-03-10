@@ -8,11 +8,17 @@
 import SwiftUI
 
 struct AddRecipe: View {
-    var body: some View {
-        Text("Add Recipe here")
+    @Binding var recipeList: [Recipe]
+    @State private var recipe: Recipe
+    
+    init(recipeList: Binding<[Recipe]>) {
+        self._recipeList = recipeList
+        self._recipe = State(initialValue: Recipe(title: "", category: Category(title: "No Category")))
+        
+        self.recipeList.append(self.recipe)
     }
-}
-
-#Preview {
-    AddRecipe()
+    
+    var body: some View {
+        AddEditRecipe(recipe: $recipe)
+    }
 }

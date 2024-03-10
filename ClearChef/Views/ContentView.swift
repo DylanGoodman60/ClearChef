@@ -8,24 +8,35 @@
 import SwiftUI
 
 struct ContentView: View {
-    let recipes: [Recipe] = [
-        .init(id: "Pad Thai"),
-        .init(id: "Oatmeal")
+    @State private var recipes: [Recipe] = [
+        .init(title: "Pad Thai", category: Category(title: "Breakfast")),
+        .init(title: "Oatmeal", category: Category(title: "Breakfast"))
     ]
-
+    
+    @State private var categories: [Category] = [
+        Category(title: "Breakfast"),
+        Category(title: "Stir Fry")
+    ]
+    
+    
+    func addRecipe() -> Void {
+        var recipe = Recipe(title: "", category: Category(title: "Breakfast"))
+        recipes.append(recipe)
+    }
+    
     var body: some View {
         NavigationStack {
             List {
                 Section("Favourites") {
-                    ForEach(recipes) { recipe in
-                        NavigationLink(value: recipe) {
-                            RecipeRow(recipe: recipe)
+                    ForEach(0..<recipes.count, id: \.self) { recipe_index in
+                        NavigationLink(value: recipe_index) {
+                            RecipeRow(recipe: recipes[recipe_index])
                         }
                     }
                 }
             }
-            .navigationDestination(for: Recipe.self) { recipe in
-                RecipeInfo(recipe: recipe)
+            .navigationDestination(for: Int.self) { recipe_index in
+                RecipeInfo(recipe: $recipes[recipe_index])
             }
             .navigationTitle("Clear Chef")
             .toolbar {
@@ -39,11 +50,13 @@ struct ContentView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink {
-                        AddRecipe()
+                        AddEditRecipe(recipe: $recipes[recipes.count - 1])
                     } label: {
                         Image(systemName: "plus.circle")
                             .foregroundColor(.blue)
-                    }
+                    }.simultaneousGesture(TapGesture().onEnded {
+                        addRecipe()
+                    })
                 }
             }
         }
