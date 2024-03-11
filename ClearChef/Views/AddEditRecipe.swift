@@ -158,15 +158,15 @@ struct AddEditRecipe: View {
                         Spacer()
                         Image(systemName: "plus.circle").foregroundStyle(.blue)
                         Button("Add Ingredient") {  
-                            newItem = ""
                             showAddIngredient = true
                         }.alert("Add Ingredient", isPresented: $showAddIngredient) {
                             TextField("Ingredient", text: $newItem)
                             Button("Cancel", role: .cancel) {
-
+                                newItem = ""
                             }
                             Button("OK") {
                                 recipe.ingredients.append(Ingredient(title: newItem))
+                                newItem = ""
                             }
                         }
                         Spacer()
@@ -190,17 +190,17 @@ struct AddEditRecipe: View {
                         Spacer()
                         Image(systemName: "plus.circle").foregroundStyle(.blue)
                         Button("Add Direction") {
-                            newItem = ""
                             showAddDirection = true
                         }.alert("Add Direction", isPresented: $showAddDirection) {
                             TextField("Direction", text: $newItem)
                             Button("Cancel", role: .cancel) {
-
+                                newItem = ""
                             }
                             Button("OK") {
                                 let newDirection = Direction(title: newItem)
                                 recipe.directionsMap[newDirection.id] = []
                                 recipe.directions.append(newDirection)
+                                newItem = ""
                             }
                         }
                         Spacer()
@@ -221,29 +221,17 @@ struct IngredientsRow: View {
     @Binding var ingredient: Ingredient
     var index: Int
     var removeFromList: (Int, UUID) -> Void
-    @State private var showEditAlert = false
-    @State private var workingTitle: String = ""
-
+    
     var body: some View {
         HStack {
             ZStack {
                 Image(systemName: "circle.fill").foregroundStyle(.blue)
                 Text((index + 1).formatted()).font(.caption).fontWeight(.bold).foregroundStyle(.white)
             }.padding(.trailing)
-            Text(ingredient.title)
-            Spacer()
-            Image(systemName: "pencil.circle").foregroundStyle(.blue).onTapGesture {
-                self.workingTitle = ingredient.title
-                showEditAlert = true
-            }.alert("Edit Ingredient", isPresented: $showEditAlert) {
-                TextField("Ingredient", text: $workingTitle)
-                Button("Cancel", role: .cancel) {
-
-                }
-                Button("OK") {
-                    ingredient.title = self.workingTitle
-                }
+            TextField("Ingredient", text: $ingredient.title).onAppear {
+                UITextField.appearance().clearButtonMode = .whileEditing
             }
+            Spacer()
             Image(systemName: "minus.circle.fill").foregroundStyle(.red).onTapGesture {
                 removeFromList(index, ingredient.id)
             }
@@ -257,8 +245,6 @@ struct DirectionRow: View {
     @Binding var direction: Direction
     var index: Int
     var removeFromList: (Int, UUID) -> Void
-    @State private var showEditAlert = false
-    @State private var workingTitle: String = ""
     @Binding var directionMap: [UUID: [UUID]]
     let ingredients: [Ingredient]
     @State private var openLinkMenu = false
@@ -271,29 +257,25 @@ struct DirectionRow: View {
                     Image(systemName: "circle.fill").foregroundStyle(.blue)
                     Text((index + 1).formatted()).font(.caption).fontWeight(.bold).foregroundStyle(.white)
                 }.padding(.trailing)
-                Text(direction.title).padding(.trailing, 40)
+                TextField("Ingredient", text: $direction.title).onAppear {
+                    UITextField.appearance().clearButtonMode = .whileEditing
+                }
+
                 Spacer()
                 
-                Image(systemName: "pencil.circle").foregroundStyle(.blue).onTapGesture {
-                    self.workingTitle = direction.title
-                    showEditAlert = true
-                }.alert("Edit Ingredient", isPresented: $showEditAlert) {
-                    TextField("Ingredient", text: $workingTitle)
-                    Button("Cancel", role: .cancel) {
-
-                    }
-                    Button("OK") {
-                        direction.title = self.workingTitle
-                    }
-                }
                 Image(systemName: "minus.circle.fill").foregroundStyle(.red).onTapGesture {
                     removeFromList(index, direction.id)
                 }
                 Image(systemName: "link.badge.plus").foregroundStyle(.blue).onTapGesture {
                     openLinkMenu.toggle()
-                }.IOSPopover(isPresented: $openLinkMenu, arrowDirection: .down, content: {
-                    IngredientLinkPage(ingredients: ingredients, directionMapList: $directionMap, direction: direction.id).frame(height: 300).padding()
-                })
+                }.popover(isPresented: $openLinkMenu ) {
+                    VStack {
+                        Button("Close") {
+                            openLinkMenu.toggle()
+                        }
+                        IngredientLinkPage(ingredients: ingredients, directionMapList: $directionMap, direction: direction.id).frame(height: 300).padding()
+                    }
+                }
                 
             }
         }
