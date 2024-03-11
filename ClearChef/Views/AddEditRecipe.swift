@@ -132,7 +132,7 @@ struct AddEditRecipe: View {
                     }
                 }
 
-                PhotosSelector()
+                PhotosPicker("Select Display Image", selection: $recipe.image, matching: .images)
                 
                 Section("Ingredients") {
                     ForEach(0..<recipe.ingredients.count, id: \.self) { ingredient_index in
