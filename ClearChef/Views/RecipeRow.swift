@@ -15,7 +15,7 @@ struct RecipeRow: View {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
-            Text(recipe.id)
+            Text(recipe.title)
             Spacer()
         }
         

@@ -15,14 +15,12 @@ enum Flavor: String, CaseIterable, Identifiable {
 }
 
 struct AddEditRecipe: View {
-    var recipe: Recipe // recipe as param
+    @Binding var recipe: Recipe // recipe as param
     //Probably include a function argument here to call when done editing with new state.
-    @State private var description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-    @State private var prepTime: Date?
-    @State private var cookTime: Date?
     @State private var selectedFlavor: Flavor = .chocolate
-    @State private var title = ""
     @State private var showAddIngredient = false
+    @State private var showAddDirection = false
+    
 
     
     let data: [(String, [String])] = [
@@ -30,26 +28,17 @@ struct AddEditRecipe: View {
         ("Two", Array(0...60).map { "\($0) m" }),
     ]
     
-    @State private var prepTimeSelection: [String] = ["0 h", "20 m"]
     @State private var prepTimeOpenMenu: Bool = false
     
-    @State private var cookTimeSelection: [String] = ["0 h", "20 m"]
     @State private var cookTimeOpenMenu: Bool = false
-    
-    @State private var ingredients: [Ingredient] = [Ingredient(title:"1 cup oil"), Ingredient(title:"3 tbsp peanuts"), Ingredient(title:"Boof")]
-    @State private var directions: [Direction] = [
-        Direction(title: "Add thing to thing"),
-        Direction(title: "Make the sauce")
-    ]
-    
-    
-    @State private var directionsMap: [UUID: [UUID]] = [:]
-    
+        
     @State private var newItem = ""
     
     func fakeInit() {
-        for direction in directions {
-            directionsMap[direction.id] = []
+        for direction in recipe.directions {
+            if recipe.directionsMap[direction.id] == nil {
+                recipe.directionsMap[direction.id] = []
+            }
         }
     }
     
@@ -64,12 +53,12 @@ struct AddEditRecipe: View {
     
     func removeIndexFromIngredientsCallback() -> (Int, UUID) -> Void{
         func removeIndex(index: Int, id: UUID) {
-            for direction_index in directionsMap {
-                if let index = directionsMap[direction_index.key]?.firstIndex(of: id) {
-                    directionsMap[direction_index.key]?.remove(at: index)
+            for direction_index in recipe.directionsMap {
+                if let index = recipe.directionsMap[direction_index.key]?.firstIndex(of: id) {
+                    recipe.directionsMap[direction_index.key]?.remove(at: index)
                 }
             }
-            ingredients.remove(at: index)
+            recipe.ingredients.remove(at: index)
         }
         
         return removeIndex
@@ -77,130 +66,138 @@ struct AddEditRecipe: View {
     
     func removeIndexFromDirectionsCallback() -> (Int, UUID) -> Void{
         func removeIndex(index: Int, id: UUID) {
-            directionsMap.removeValue(forKey: id)
-            directions.remove(at: index)
+            recipe.directionsMap.removeValue(forKey: id)
+            recipe.directions.remove(at: index)
         }
         
         return removeIndex
     }
     
-    
     var body: some View {
-        Form {
-            HStack {
-                Text("Title").padding(.trailing)
-                Spacer()
-                TextField("Title", text: $title).onAppear {
-                    UITextField.appearance().clearButtonMode = .whileEditing
+            Form {
+                HStack {
+                    Text("Title").padding(.trailing)
+                    Spacer()
+                    TextField("Title", text: $recipe.title).onAppear {
+                        UITextField.appearance().clearButtonMode = .whileEditing
+                    }
                 }
-            }
-            
-            VStack(alignment: .leading) {
-                Text("Description").font(.headline)
-                Spacer()
-                TextField("Description", text: $description, axis: .vertical)
-            }
-            HStack {
-                Text("Prep Time")
-                Spacer()
                 
-                ZStack{
-                    durationString(selection: self.prepTimeSelection).onTapGesture {
-                                        prepTimeOpenMenu.toggle()
-                                    }.IOSPopover(isPresented: $prepTimeOpenMenu, arrowDirection: .down, content: {
-                                        HStack{
-                                            MultiPicker(data: data, selection: $prepTimeSelection).frame(height: 300).frame(width: 300)
-                                        }
-                                    }).padding(7.0)
-                                        .background(prepTimeOpenMenu ? .picker : .gray.opacity(0.2))
-                                        .cornerRadius(6.0)
-                                        .foregroundStyle(.blue)
-                                        .animation(.spring())
-
-                }
-                                
-            }
-            Picker("Category", selection: $selectedFlavor) {
-                ForEach(Flavor.allCases) { flavor in
-                    Text(flavor.rawValue.capitalized)
-                }
-            }.pickerStyle(.menu)
-            HStack {
-                Text("Cook Time")
-                Spacer()
-                ZStack{
-                    durationString(selection: self.cookTimeSelection).onTapGesture {
-                                        cookTimeOpenMenu.toggle()
-                                    }.IOSPopover(isPresented: $cookTimeOpenMenu, arrowDirection: .down, content: {
-                                        HStack{
-                                            MultiPicker(data: data, selection: $cookTimeSelection).frame(height: 300).frame(width: 300)
-                                        }
-                                    }).padding(7.0)
-                                        .background(cookTimeOpenMenu ? .picker : .gray.opacity(0.2))
-                                        .cornerRadius(6.0)
-                                        .foregroundStyle(.blue)
-                                        .animation(.spring())
-
-                }
-            }
-
-            PhotosSelector()
-            
-            Section("Ingredients") {
-                ForEach(0..<ingredients.count, id: \.self) { ingredient_index in
-                    IngredientsRow(ingredient: $ingredients[ingredient_index], index: ingredient_index, removeFromList: removeIndexFromIngredientsCallback())
+                VStack(alignment: .leading) {
+                    Text("Description").font(.headline)
+                    Spacer()
+                    TextField("Description", text: $recipe.description, axis: .vertical)
                 }
                 HStack {
+                    Text("Prep Time")
                     Spacer()
-                    Image(systemName: "plus.circle").foregroundStyle(.blue)
-                    Button("Add Ingredient") {  
-                        showAddIngredient = true
-                        newItem = ""
-                    }.alert("Add Ingredient", isPresented: $showAddIngredient) {
-                        TextField("Ingredient", text: $newItem)
-                        Button("Cancel", role: .cancel) {
+                    
+                    ZStack{
+                        durationString(selection: recipe.prepTime).onTapGesture {
+                                            prepTimeOpenMenu.toggle()
+                                        }.IOSPopover(isPresented: $prepTimeOpenMenu, arrowDirection: .down, content: {
+                                            HStack{
+                                                MultiPicker(data: data, selection: $recipe.prepTime).frame(height: 300).frame(width: 300)
+                                            }
+                                        }).padding(7.0)
+                                            .background(prepTimeOpenMenu ? .picker : .gray.opacity(0.2))
+                                            .cornerRadius(6.0)
+                                            .foregroundStyle(.blue)
+                                            .animation(.spring())
 
-                        }
-                        Button("OK") {
-                            ingredients.append(Ingredient(title: newItem))
-                        }
                     }
-                    Spacer()
+                                    
                 }
-
-            }
-            
-            Section("Directions") {
-                ForEach(0..<directions.count, id: \.self) { direction_index in
-                    DirectionRow(direction: $directions[direction_index], index: direction_index, removeFromList: removeIndexFromDirectionsCallback())
-                }
-
+                Picker("Category", selection: $selectedFlavor) {
+                    ForEach(Flavor.allCases) { flavor in
+                        Text(flavor.rawValue.capitalized)
+                    }
+                }.pickerStyle(.menu)
                 HStack {
+                    Text("Cook Time")
                     Spacer()
-                    Image(systemName: "plus.circle").foregroundStyle(.blue)
-                    Button("Add Ingredient") {
-                        showAddIngredient = true
-                        newItem = ""
-                    }.alert("Add Ingredient", isPresented: $showAddIngredient) {
-                        TextField("Ingredient", text: $newItem)
-                        Button("Cancel", role: .cancel) {
+                    ZStack{
+                        durationString(selection: recipe.cookTime).onTapGesture {
+                                            cookTimeOpenMenu.toggle()
+                                        }.IOSPopover(isPresented: $cookTimeOpenMenu, arrowDirection: .down, content: {
+                                            HStack{
+                                                MultiPicker(data: data, selection: $recipe.cookTime).frame(height: 300).frame(width: 300)
+                                            }
+                                        }).padding(7.0)
+                                            .background(cookTimeOpenMenu ? .picker : .gray.opacity(0.2))
+                                            .cornerRadius(6.0)
+                                            .foregroundStyle(.blue)
+                                            .animation(.spring())
 
-                        }
-                        Button("OK") {
-                            directions.append(Direction(title: newItem))
-                        }
                     }
-                    Spacer()
                 }
 
-            }.onAppear(perform: {
-                fakeInit()
-            })
-            
+                PhotosSelector()
+                
+                Section("Ingredients") {
+                    ForEach(0..<recipe.ingredients.count, id: \.self) { ingredient_index in
+                        IngredientsRow(ingredient: $recipe.ingredients[ingredient_index], index: ingredient_index, removeFromList: removeIndexFromIngredientsCallback())
+                    }
+                    HStack {
+                        Spacer()
+                        Image(systemName: "plus.circle").foregroundStyle(.blue)
+                        Button("Add Ingredient") {  
+                            showAddIngredient = true
+                            newItem = ""
+                        }.alert("Add Ingredient", isPresented: $showAddIngredient) {
+                            TextField("Ingredient", text: $newItem)
+                            Button("Cancel", role: .cancel) {
 
-            
+                            }
+                            Button("OK") {
+                                recipe.ingredients.append(Ingredient(title: newItem))
+                            }
+                        }
+                        Spacer()
+                    }
+
+                }
+                
+                Section("Directions") {
+                    
+                    List {
+                        ForEach(0..<recipe.directions.count, id: \.self) { direction_index in
+                            DirectionRow(direction: $recipe.directions[direction_index],
+                                         index: direction_index,
+                                         removeFromList: removeIndexFromDirectionsCallback(),
+                                         directionMap: $recipe.directionsMap,
+                                         ingredients: recipe.ingredients)
+                        }
+                    }
+
+                    HStack {
+                        Spacer()
+                        Image(systemName: "plus.circle").foregroundStyle(.blue)
+                        Button("Add Direction") {
+                            showAddDirection = true
+                            newItem = ""
+                        }.alert("Add Direction", isPresented: $showAddDirection) {
+                            TextField("Direction", text: $newItem)
+                            Button("Cancel", role: .cancel) {
+
+                            }
+                            Button("OK") {
+                                let newDirection = Direction(title: newItem)
+                                recipe.directionsMap[newDirection.id] = []
+                                recipe.directions.append(newDirection)
+                            }
+                        }
+                        Spacer()
+                    }
+
+                }.onAppear(perform: {
+                    fakeInit()
+                })
+                
+
+                
+            }
         }
-    }
 }
 
 struct IngredientsRow: View {
@@ -245,34 +242,41 @@ struct DirectionRow: View {
     var index: Int
     var removeFromList: (Int, UUID) -> Void
     @State private var showEditAlert = false
-    @State private var showLinkAlert = false
     @State private var workingTitle: String = ""
-
+    @Binding var directionMap: [UUID: [UUID]]
+    let ingredients: [Ingredient]
+    
     var body: some View {
-        HStack {
-            ZStack {
-                Image(systemName: "circle.fill").foregroundStyle(.blue)
-                Text((index + 1).formatted()).font(.caption).fontWeight(.bold).foregroundStyle(.white)
-            }.padding(.trailing)
-            Text(direction.title)
-            Spacer()
-            Image(systemName: "link.badge.plus").foregroundStyle(.blue)
-            Image(systemName: "pencil.circle").foregroundStyle(.blue).onTapGesture {
-                showEditAlert = true
-                self.workingTitle = direction.title
-            }.alert("Edit Ingredient", isPresented: $showEditAlert) {
-                TextField("Ingredient", text: $workingTitle)
-                Button("Cancel", role: .cancel) {
+        ZStack {
+            NavigationLink(destination: IngredientLinkPage(ingredients: ingredients, directionMapList: $directionMap, direction: direction.id)) {
+                EmptyView()
+            }.opacity(0.0)
+            HStack {
+                ZStack {
+                    Image(systemName: "circle.fill").foregroundStyle(.blue)
+                    Text((index + 1).formatted()).font(.caption).fontWeight(.bold).foregroundStyle(.white)
+                }.padding(.trailing)
+                Text(direction.title).padding(.trailing, 40)
+                Spacer()
+                
+                Image(systemName: "pencil.circle").foregroundStyle(.blue).onTapGesture {
+                    showEditAlert = true
+                    self.workingTitle = direction.title
+                }.alert("Edit Ingredient", isPresented: $showEditAlert) {
+                    TextField("Ingredient", text: $workingTitle)
+                    Button("Cancel", role: .cancel) {
 
+                    }
+                    Button("OK") {
+                        direction.title = self.workingTitle
+                    }
                 }
-                Button("OK") {
-                    direction.title = self.workingTitle
+                Image(systemName: "minus.circle.fill").foregroundStyle(.red).onTapGesture {
+                    removeFromList(index, direction.id)
                 }
+                Image(systemName: "link.badge.plus").foregroundStyle(.blue)
+                
             }
-            Image(systemName: "minus.circle.fill").foregroundStyle(.red).onTapGesture {
-                removeFromList(index, direction.id)
-            }
-
         }
     }
 }
@@ -304,9 +308,6 @@ struct MultiPicker: View  {
     }
 }
 
-#Preview {
-    AddEditRecipe(recipe: Recipe(id: "test"))
-}
 
 
 
