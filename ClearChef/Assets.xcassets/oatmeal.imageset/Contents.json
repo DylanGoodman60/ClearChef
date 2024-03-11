@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "265505-maple-and-brown-sugar-oatmeal-DDMFS-beauty_3x4-3228-ac98030b91b84fca9e80c524332e5d01.jpg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

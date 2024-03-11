@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-
+import PhotosUI
 
 enum Flavor: String, CaseIterable, Identifiable {
     case chocolate, vanilla, strawberry
@@ -29,10 +29,9 @@ struct AddEditRecipe: View {
     ]
     
     @State private var prepTimeOpenMenu: Bool = false
-    
     @State private var cookTimeOpenMenu: Bool = false
-        
     @State private var newItem = ""
+    @State private var displayItem: PhotosPickerItem?
     
     func fakeInit() {
         for direction in recipe.directions {
@@ -75,6 +74,22 @@ struct AddEditRecipe: View {
     
     var body: some View {
             Form {
+                VStack{
+                    if #available(iOS 17.0, *) {
+                        PhotosPicker("Select Display Image", selection: $displayItem, matching: .images).onChange(of: displayItem) {
+                            Task {
+                                if let loaded = try? await displayItem?.loadTransferable(type: Image.self) {
+                                    recipe.image = loaded
+                                } else {
+                                    print("Failed")
+                                }
+                            }
+                        }
+                    } else {
+                        // Fallback on earlier versions
+                    }
+                    recipe.image.resizable().scaledToFit().frame(height: 200)
+                }
                 HStack {
                     Text("Title").padding(.trailing)
                     Spacer()
@@ -132,7 +147,8 @@ struct AddEditRecipe: View {
                     }
                 }
 
-                PhotosPicker("Select Display Image", selection: $recipe.image, matching: .images)
+                
+                
                 
                 Section("Ingredients") {
                     ForEach(0..<recipe.ingredients.count, id: \.self) { ingredient_index in
@@ -142,8 +158,8 @@ struct AddEditRecipe: View {
                         Spacer()
                         Image(systemName: "plus.circle").foregroundStyle(.blue)
                         Button("Add Ingredient") {  
-                            showAddIngredient = true
                             newItem = ""
+                            showAddIngredient = true
                         }.alert("Add Ingredient", isPresented: $showAddIngredient) {
                             TextField("Ingredient", text: $newItem)
                             Button("Cancel", role: .cancel) {
@@ -174,8 +190,8 @@ struct AddEditRecipe: View {
                         Spacer()
                         Image(systemName: "plus.circle").foregroundStyle(.blue)
                         Button("Add Direction") {
-                            showAddDirection = true
                             newItem = ""
+                            showAddDirection = true
                         }.alert("Add Direction", isPresented: $showAddDirection) {
                             TextField("Direction", text: $newItem)
                             Button("Cancel", role: .cancel) {
@@ -217,8 +233,8 @@ struct IngredientsRow: View {
             Text(ingredient.title)
             Spacer()
             Image(systemName: "pencil.circle").foregroundStyle(.blue).onTapGesture {
-                showEditAlert = true                
                 self.workingTitle = ingredient.title
+                showEditAlert = true
             }.alert("Edit Ingredient", isPresented: $showEditAlert) {
                 TextField("Ingredient", text: $workingTitle)
                 Button("Cancel", role: .cancel) {
@@ -245,12 +261,11 @@ struct DirectionRow: View {
     @State private var workingTitle: String = ""
     @Binding var directionMap: [UUID: [UUID]]
     let ingredients: [Ingredient]
+    @State private var openLinkMenu = false
+    
     
     var body: some View {
         ZStack {
-            NavigationLink(destination: IngredientLinkPage(ingredients: ingredients, directionMapList: $directionMap, direction: direction.id)) {
-                EmptyView()
-            }.opacity(0.0)
             HStack {
                 ZStack {
                     Image(systemName: "circle.fill").foregroundStyle(.blue)
@@ -260,8 +275,8 @@ struct DirectionRow: View {
                 Spacer()
                 
                 Image(systemName: "pencil.circle").foregroundStyle(.blue).onTapGesture {
-                    showEditAlert = true
                     self.workingTitle = direction.title
+                    showEditAlert = true
                 }.alert("Edit Ingredient", isPresented: $showEditAlert) {
                     TextField("Ingredient", text: $workingTitle)
                     Button("Cancel", role: .cancel) {
@@ -274,7 +289,11 @@ struct DirectionRow: View {
                 Image(systemName: "minus.circle.fill").foregroundStyle(.red).onTapGesture {
                     removeFromList(index, direction.id)
                 }
-                Image(systemName: "link.badge.plus").foregroundStyle(.blue)
+                Image(systemName: "link.badge.plus").foregroundStyle(.blue).onTapGesture {
+                    openLinkMenu.toggle()
+                }.IOSPopover(isPresented: $openLinkMenu, arrowDirection: .down, content: {
+                    IngredientLinkPage(ingredients: ingredients, directionMapList: $directionMap, direction: direction.id).frame(height: 300).padding()
+                })
                 
             }
         }
@@ -316,7 +335,7 @@ extension View {
   func IOSPopover<Content: View>(isPresented: Binding<Bool>, arrowDirection: UIPopoverArrowDirection, @ViewBuilder content: @escaping ()->Content)->some View {
     self
       .background {
-        PopOverController(isPresented: isPresented, arrowDirection: arrowDirection, content: content())
+          PopOverController(isPresented: isPresented, arrowDirection: arrowDirection, content: content())
       }
   }
 }

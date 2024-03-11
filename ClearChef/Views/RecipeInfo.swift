@@ -25,9 +25,13 @@ struct RecipeInfo: View {
     
     var previewForm: some View {
         Form {
-            recipe.image.frame(height: 200)
-            VStack{
+            HStack {
+                recipe.image.resizable().scaledToFill().frame(height: 200).padding(.bottom)
+            }
+            
+            HStack{
                 Text("Description")
+                Spacer()
                 Text(recipe.description)
             }
             
@@ -65,8 +69,13 @@ struct RecipeInfo: View {
     }
 
     var body: some View {
-        choice.navigationTitle(recipe.title)
-        .toolbar {
+        HStack {
+            if editMode?.wrappedValue.isEditing == true {
+                AddEditRecipe(recipe: $recipe)
+            } else {
+                previewForm
+            }
+        }.navigationTitle(recipe.title).toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 EditButton()
             }

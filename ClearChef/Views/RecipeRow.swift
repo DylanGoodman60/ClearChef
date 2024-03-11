@@ -12,9 +12,11 @@ struct RecipeRow: View {
 
     var body: some View {
         HStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
+            recipe.image
+                .resizable()
+                .scaledToFill()
+                .frame(width: 60, height: 60)
+                .foregroundStyle(.tint).padding(.trailing)
             Text(recipe.title)
             Spacer()
         }

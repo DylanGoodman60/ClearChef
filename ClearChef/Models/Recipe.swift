@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct Recipe: Identifiable, Hashable {
+struct Recipe: Identifiable {
     var id = UUID()
     var title: String = ""
     var description: String = ""
@@ -20,7 +20,5 @@ struct Recipe: Identifiable, Hashable {
     var directionsMap: [UUID: [UUID]] = [:]
     
     
-    var image: Image {
-        Image(systemName: "globe")
-    }
+    var image: Image = Image(systemName: "globe")
 }
