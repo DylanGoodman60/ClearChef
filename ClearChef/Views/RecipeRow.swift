@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RecipeRow: View {
     var recipe: Recipe
-    @Binding var infoOnId: UUID
+    @Binding var infoOnId: UUID?
     @EnvironmentObject private var dataStore: DataStore
 
     var body: some View {

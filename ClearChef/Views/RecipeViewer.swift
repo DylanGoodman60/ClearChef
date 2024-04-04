@@ -193,7 +193,7 @@ struct RecipeViewer: View {
 
 struct RecipeViewer_Previews: PreviewProvider {
     static var previews: some View {
-        RecipeViewer(recipe: Recipe(title: "", category: Category(title: "Test")))
+        RecipeViewer(recipe: Recipe(title: ""))
         ContentView()
             .previewInterfaceOrientation(.landscapeRight).environmentObject(DataStore())
     }

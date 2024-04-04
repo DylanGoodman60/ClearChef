@@ -11,7 +11,7 @@ class DataStore: ObservableObject {
     @Published var recipes: [Recipe] = [
         .init(title: "Pad Thai",
               description: "Easy Pad Thai Recipe",
-              category: Category(title: "Breakfast"),
+              category: "Breakfast",
               cookTime: ["1 h", "10 m"],
               ingredients: [
                 Ingredient(title: "400 g Rice Noodles"),
@@ -26,7 +26,7 @@ class DataStore: ObservableObject {
               image: Image("padThai")),
         .init(title: "OatMeal",
               description: "Easy Oatmeal Recipe",
-              category: Category(title: "Breakfast"),
+              category: "",
               cookTime: ["0 h", "10 m"],
               ingredients: [
                 Ingredient(title: "1/2 cup rolled oats"),
@@ -41,9 +41,9 @@ class DataStore: ObservableObject {
               image: Image("oatmeal")),
     ]
     
-    @Published var categories: [Category] = [
-        Category(title: "Breakfast"),
-        Category(title: "Stir Fry")
+    @Published var categories: [String] = [
+        "Breakfast",
+        "Test"
     ]
     
     func deleteRecipe(id: UUID) -> Void {
@@ -52,9 +52,9 @@ class DataStore: ObservableObject {
         }
     }
     
-    func deleteCategory(id: UUID) -> Void {
+    func deleteCategory(name: String) -> Void {
         categories.removeAll { category in
-            category.id == id
+            category == name
         }
     }
     

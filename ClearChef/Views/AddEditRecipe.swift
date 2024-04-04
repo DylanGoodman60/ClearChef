@@ -9,19 +9,12 @@ import Foundation
 import SwiftUI
 import PhotosUI
 
-enum Flavor: String, CaseIterable, Identifiable {
-    case chocolate, vanilla, strawberry
-    var id: Self { self }
-}
-
 struct AddEditRecipe: View {
     @Binding var recipe: Recipe // recipe as param
     //Probably include a function argument here to call when done editing with new state.
-    @State private var selectedFlavor: Flavor = .chocolate
     @State private var showAddIngredient = false
     @State private var showAddDirection = false
-    
-
+    @EnvironmentObject private var dataStore: DataStore
     
     let data: [(String, [String])] = [
         ("One", Array(0...24).map { "\($0) h" }),
@@ -123,9 +116,9 @@ struct AddEditRecipe: View {
                     }
                                     
                 }
-                Picker("Category", selection: $selectedFlavor) {
-                    ForEach(Flavor.allCases) { flavor in
-                        Text(flavor.rawValue.capitalized)
+                Picker("Category", selection: $recipe.category) {
+                    ForEach(dataStore.categories, id: \.self) { category in
+                        Text(category.capitalized)
                     }
                 }.pickerStyle(.menu)
                 HStack {
