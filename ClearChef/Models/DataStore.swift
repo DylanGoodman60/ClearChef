@@ -30,7 +30,7 @@ class DataStore: ObservableObject {
               cookTime: ["0 h", "10 m"],
               ingredients: [
                 Ingredient(title: "1/2 cup rolled oats"),
-                Ingredient(title: "1/2 tbsp suager"),
+                Ingredient(title: "1/2 tbsp sugar"),
                 Ingredient(title: "Blueberries")
               ],
               directions: [
