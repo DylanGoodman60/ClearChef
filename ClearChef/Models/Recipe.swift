@@ -13,6 +13,7 @@ struct Recipe: Identifiable {
     var title: String = ""
     var description: String = ""
     var category: Category
+    var difficulty: Int = 3
     var prepTime: [String] = ["0 h", "20 m"]
     var cookTime: [String] = ["0 h", "20 m"]
     var ingredients: [Ingredient] = []

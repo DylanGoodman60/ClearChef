@@ -81,7 +81,7 @@ struct RecipeInfo: View {
             }
             ToolbarItem(placement: .bottomBar) {
                 NavigationLink {
-                    RecipeViewer()
+                    RecipeViewer(recipe: recipe)
                 } label: {
                     Image(systemName: "play.rectangle.fill")
                         .resizable()

@@ -129,6 +129,12 @@ struct AddEditRecipe: View {
                     }
                 }.pickerStyle(.menu)
                 HStack {
+                    Text("Difficulty")
+                    Spacer()
+                    RatingView(rating: $recipe.difficulty)
+                }
+                
+                HStack {
                     Text("Cook Time")
                     Spacer()
                     ZStack{
