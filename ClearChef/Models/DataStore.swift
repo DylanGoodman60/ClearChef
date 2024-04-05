@@ -37,15 +37,15 @@ class DataStore: ObservableObject {
                 Ingredient(id: UUID(uuidString: "14B86744-FACB-49C3-9C71-4A6E722BAB1B")!, title: "Ground chilli or cayenne pepper"),
               ],
               directions: [
-                Direction(id: UUID(uuidString: "F317B9A0-2C26-445F-AF82-2550D0779A75")!, title: "Place noodles in a large bowl, pour over plenty of boiling water. Soak for 5 minutes, then drain in a colander and quickly rinse under cold water. Don’t leave them sitting around for more than 5 – 10 minutes."),
+                Direction(id: UUID(uuidString: "F317B9A0-2C26-445F-AF82-2550D0779A75")!, title: "Place noodles in a large bowl, pour over plenty of boiling water. Soak for 5 minutes, then drain in a colander"),
                 Direction(id: UUID(uuidString: "6C3C5127-29F0-4A49-AB43-D5996E6D0163")!, title: "Mix Sauce in small bowl."),
                 Direction(id: UUID(uuidString: "AE825E27-D2D0-4B62-9833-972DD67EA7C4")!, title: "Heat 2 tbsp oil in a large non stick pan (or well seasoned skillet) over high heat. Add garlic and onion, cook for 30 seconds."),
                 Direction(id: UUID(uuidString: "F30BB520-9E37-4010-AB06-5A138A6C49D8")!, title: "Add chicken and cook for 1 1/2 minutes until mostly cooked through."),
-                Direction(id: UUID(uuidString: "9CE0BBA6-D15B-455B-B60D-6E09D6292B56")!, title: "Push chicken to one side of the pan, pour egg in on the other side. Scramble using the wooden spoon (add touch of extra oil if pan is too dry), then mix into chicken."),
+                Direction(id: UUID(uuidString: "9CE0BBA6-D15B-455B-B60D-6E09D6292B56")!, title: "Push chicken to one side of the pan, pour egg in on the other side. Scramble using the wooden spoon, then mix into chicken."),
                 Direction(id: UUID(uuidString: "08180942-A6BA-4F93-A499-51DBC3A3CCF5")!, title: "Add bean sprouts, tofu, noodles then Sauce."),
                 Direction(id: UUID(uuidString: "8D9E2700-981C-4C9C-9519-03B23F7C679C")!, title: "Toss gently for about 1 1/2 minutes until Sauce is absorbed by the noodles."),
                 Direction(id: UUID(uuidString: "3430939E-A250-4819-92E3-2C11DC26D9C1")!, title: "Add garlic chives and half the peanuts. Toss through quickly then remove from heat."),
-                Direction(id: UUID(uuidString: "97D62BB4-6DBB-4E86-BB98-1B04CB1DE6E3")!, title: "Serve immediately, sprinkled with remaining peanuts and lime wedges on the side, with a sprinkle of chilli and a handful of extra beansprouts on the side if desired (this is the Thai way!). Squeeze over lime juice to taste before eating."),
+                Direction(id: UUID(uuidString: "97D62BB4-6DBB-4E86-BB98-1B04CB1DE6E3")!, title: "Serve immediately, sprinkled with remaining peanuts and lime wedges on the side, with a sprinkle of chili."),
               ],
               directionsMap: [
                 UUID(uuidString: "F317B9A0-2C26-445F-AF82-2550D0779A75")! : [UUID(uuidString: "611E35C6-6CEE-48A0-B18D-C75886C90DC6")!],

@@ -17,6 +17,7 @@
 		07627B282B9943040029415D /* AddRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07627B272B9943040029415D /* AddRecipe.swift */; };
 		07627B2A2B9943EA0029415D /* RecipeViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07627B292B9943EA0029415D /* RecipeViewer.swift */; };
 		07627B2E2B9953010029415D /* RecipeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07627B2D2B9953010029415D /* RecipeInfo.swift */; };
+		07E1EB7F2BBF40F900B15422 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1EB7E2BBF40F800B15422 /* SettingsStore.swift */; };
 		4620C0A42BBDF0B500FA61B4 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4620C0A32BBDF0B500FA61B4 /* RatingView.swift */; };
 		4620C0A62BBDF85A00FA61B4 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4620C0A52BBDF85A00FA61B4 /* DataStore.swift */; };
 		4649F22B2B9CEAF700A1D245 /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4649F22A2B9CEAF700A1D245 /* Ingredient.swift */; };
@@ -37,6 +38,8 @@
 		07627B292B9943EA0029415D /* RecipeViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewer.swift; sourceTree = "<group>"; };
 		07627B2D2B9953010029415D /* RecipeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeInfo.swift; sourceTree = "<group>"; };
 		07627B2F2B9955A80029415D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.markdown; };
+		07E1EB7E2BBF40F800B15422 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		07E1EB822BBF6BCF00B15422 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4620C0A32BBDF0B500FA61B4 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		4620C0A52BBDF85A00FA61B4 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		4649F22A2B9CEAF700A1D245 /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredient.swift; sourceTree = "<group>"; };
@@ -75,6 +78,7 @@
 		07627B0E2B9926AF0029415D /* ClearChef */ = {
 			isa = PBXGroup;
 			children = (
+				07E1EB822BBF6BCF00B15422 /* Info.plist */,
 				07627B0F2B9926AF0029415D /* ClearChefApp.swift */,
 				07627B222B9931110029415D /* Models */,
 				07627B1D2B9928370029415D /* Views */,
@@ -114,6 +118,8 @@
 				4620C0A52BBDF85A00FA61B4 /* DataStore.swift */,
 				07627B232B9931420029415D /* Recipe.swift */,
 				4649F22A2B9CEAF700A1D245 /* Ingredient.swift */,
+				4649F22E2B9E638000A1D245 /* Category.swift */,
+				07E1EB7E2BBF40F800B15422 /* SettingsStore.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -200,6 +206,7 @@
 				07627B1F2B9928ED0029415D /* RecipeRow.swift in Sources */,
 				4620C0A62BBDF85A00FA61B4 /* DataStore.swift in Sources */,
 				07627B2E2B9953010029415D /* RecipeInfo.swift in Sources */,
+				07E1EB7F2BBF40F900B15422 /* SettingsStore.swift in Sources */,
 				4649F22B2B9CEAF700A1D245 /* Ingredient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -331,12 +338,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ClearChef/Preview Content\"";
-				DEVELOPMENT_TEAM = TEK6LH5Z62;
+				DEVELOPMENT_TEAM = WBU4S3K2ST;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ClearChef/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -348,8 +357,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = newmant.ClearChef;
+				PRODUCT_BUNDLE_IDENTIFIER = dylan.com;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -361,12 +371,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ClearChef/Preview Content\"";
-				DEVELOPMENT_TEAM = TEK6LH5Z62;
+				DEVELOPMENT_TEAM = WBU4S3K2ST;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ClearChef/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -378,8 +390,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = newmant.ClearChef;
+				PRODUCT_BUNDLE_IDENTIFIER = dylan.com;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

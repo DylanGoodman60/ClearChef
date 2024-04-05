@@ -107,7 +107,6 @@ struct DirectionTab: View {
                                 height: proxy.size.height
                             ).tag(0)
 
-                        
                 ZStack {
                     Color.white.frame(width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.width)
                     Text(direction.title).font(selectedFont).rotationEffect(.degrees(-90)) // Rotate content
@@ -128,7 +127,7 @@ struct DirectionTab: View {
                     if (!ingredients.isEmpty){
                         VStack{
                             ForEach(ingredients.indices, id: \.self) {ingredient_index in
-                                Text(ingredients[ingredient_index].title).font(.title3)
+                                Text(ingredients[ingredient_index].title).font(selectedFont)
                             }
                         }.rotationEffect(.degrees(-90)) // Rotate content
                             .frame(
@@ -136,7 +135,6 @@ struct DirectionTab: View {
                                 height: proxy.size.height
                             ).tag(2)
                     }
-                    .onChange(of: )
                     }
                     .frame(
                         width: proxy.size.height, // Height & width swap
@@ -157,9 +155,11 @@ struct RecipeViewer: View {
     @State private var selectedView = 1
     @Environment(\.verticalSizeClass) var verticalSizeClass: UserInterfaceSizeClass?
     @Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
+    @EnvironmentObject var settings: SettingsStore
 
     var recipe: Recipe
-        
+    @State private var tutorial = true
+
     func getRelatedInstructions(direction: Direction) -> [Ingredient]{
         
         let ingredients = recipe.ingredients.filter { Ingredient in
@@ -177,20 +177,71 @@ struct RecipeViewer: View {
     var body: some View {
         if (horizontalSizeClass == .compact && verticalSizeClass == .regular){
             Image(systemName: "rectangle.landscape.rotate")
-            Text("Please Rotate Phone")
+            Text("Please Rotate Phone To View Recipe")
+                .padding(.bottom, 1)
+            Text("Un-Rotate To Exit")
         } else {
-            TabView(selection: $selectedTab) {
-                ForEach(recipe.directions.indices, id: \.self) { direction_index in
-                    DirectionTab(direction: recipe.directions[direction_index], ingredients: getRelatedInstructions(direction: recipe.directions[direction_index]), directionCount: recipe.directions.count, selectedView: $selectedView, selectedTab: $selectedTab)
-                        .tabItem {
-                            Image(systemName: "circle")
+            if tutorial == false {
+                TabView(selection: $selectedTab) {
+                    ForEach(recipe.directions.indices, id: \.self) { direction_index in
+                        DirectionTab(direction: recipe.directions[direction_index], ingredients: getRelatedInstructions(direction: recipe.directions[direction_index]), directionCount: recipe.directions.count, selectedView: $selectedView, selectedTab: $selectedTab)
+                            .tabItem {
+                                Image(systemName: "circle")
+                            }
+                            .tag(direction_index)
+                    }
+                    .onChange(of: selectedTab) { value in
+                        if settings.isSpeechOn == true {
+                            speak(text: recipe.directions[value].title, rate: 0.52)
                         }
-                        .tag(direction_index)
+                    }
+                }.tabViewStyle(.page)
+                    .onAppear() {
+                        if settings.isSpeechOn == true {
+                            speak(text: recipe.directions[0].title, rate: 0.52)
+                        }
+                    }
+                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always)).navigationBarHidden(true)
+            } else {
+                VStack(alignment: .leading) {
+                    Spacer()
+                    HStack {
+                        Text("Swipe")
+                            .font(.title2)
+                        Image(systemName: "arrow.down.circle.fill")
+                            .resizable()
+                            .frame(width: 60, height: 60)
+                        Text("for timer")
+                            .font(.title2)
+                    }
+                    HStack {
+                        Text("Swipe")
+                            .font(.title2)
+                        Image(systemName: "arrow.up.circle.fill")
+                            .resizable()
+                            .frame(width: 60, height: 60)
+                        Text("for instructions")
+                            .font(.title2)
+                    }
+                    HStack {
+                        Text("Tap")
+                            .font(.title2)
+                        Image(systemName: "arrow.left.arrow.right.square.fill")
+                            .resizable()
+                            .frame(width: 60, height: 60)
+                        Text("for more directions")
+                            .font(.title2)
+                    }
+                    Spacer()
+                    Button("I understand, take me to the recipe!") {
+                        tutorial = false
+                    }
+                    Spacer()
                 }
-            }.tabViewStyle(.page)
 
-            .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-            .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always)).navigationBarHidden(true)
+            }
+            
         }
     }
 }

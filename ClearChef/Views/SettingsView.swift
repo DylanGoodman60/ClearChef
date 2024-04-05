@@ -39,7 +39,7 @@ struct SettingsView: View {
                         Text("\(Int(settings.fontSize))")
                         Slider(
                             value: $settings.fontSize,
-                            in: 42...76,
+                            in: 32...76,
                             step: 1
                         ) {
                             Text("Font Size")
@@ -54,13 +54,9 @@ struct SettingsView: View {
                             Text("Text-to-speech")
                                 .onChange(of: settings.isSpeechOn) { value in
                                     if (value == true) {
-                                        speak(text: "Text to speech enabled", rate: 0.6)
+                                        speak(text: "Text to speech enabled", rate: 0.52)
                                     }
                                 }
-                        }
-                        Button("Test Voice") {
-                            
-
                         }
                     }
             }
