@@ -24,47 +24,41 @@ struct RecipeInfo: View {
     }
     
     var previewForm: some View {
-        Form {
-            HStack {
-                recipe.image.resizable().scaledToFill().frame(height: 200).padding(.bottom)
-            }
-            
-            HStack{
-                Text("Description")
-                Spacer()
-                Text(recipe.description)
-            }
-            
-            HStack {
-                Text("Prep Time")
-                Spacer()
-                durationString(selection: recipe.prepTime)
-            }
-            HStack {
-                Text("Cook Time")
-                Spacer()
-                durationString(selection: recipe.cookTime)
-            }
-            Section("Ingredients") {
-                ForEach(recipe.ingredients) { ingredient in
-                    Text(ingredient.title)
+        VStack {
+            Form {
+                Section {
+                    HStack{
+                        Text("Description")
+                        Spacer()
+                        Text(recipe.description)
+                    }
+                } header: {
+                    recipe.image.resizable().scaledToFill().frame(width: UIScreen.main.bounds.width).padding(.bottom, 20).clipShape(RoundedRectangle(cornerRadius: 10))
                 }
-            }
-            
-            Section("Directions") {
-                ForEach(recipe.directions) { direction in
-                    Text(direction.title)
+                
+                HStack {
+                    Text("Prep Time")
+                    Spacer()
+                    durationString(selection: recipe.prepTime)
                 }
+                HStack {
+                    Text("Cook Time")
+                    Spacer()
+                    durationString(selection: recipe.cookTime)
+                }
+                Section("Ingredients") {
+                    ForEach(recipe.ingredients) { ingredient in
+                        Text(ingredient.title)
+                    }
+                }
+                
+                Section("Directions") {
+                    ForEach(recipe.directions) { direction in
+                        Text(direction.title)
+                    }
+                }
+                
             }
-            
-        }
-    }
-    
-    var choice: some View {
-        if editMode?.wrappedValue.isEditing == true {
-            AnyView(AddEditRecipe(recipe: $recipe))
-        } else {
-            AnyView(previewForm)
         }
     }
 
@@ -93,5 +87,8 @@ struct RecipeInfo: View {
     }
 }
 
+#Preview {
+    ContentView().environmentObject(DataStore())
+}
 
 

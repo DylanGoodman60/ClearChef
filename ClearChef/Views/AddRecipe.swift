@@ -13,7 +13,7 @@ struct AddRecipe: View {
     
     init(recipeList: Binding<[Recipe]>) {
         self._recipeList = recipeList
-        self._recipe = State(initialValue: Recipe(title: ""))
+        self._recipe = State(initialValue: Recipe(title: "New Recipe"))
         
         self.recipeList.append(self.recipe)
     }

@@ -23,3 +23,4 @@ struct Recipe: Identifiable {
     
     var image: Image = Image(systemName: "globe")
 }
+

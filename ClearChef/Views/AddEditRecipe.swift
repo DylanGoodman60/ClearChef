@@ -67,29 +67,34 @@ struct AddEditRecipe: View {
     
     var body: some View {
             Form {
-                VStack{
-                    if #available(iOS 17.0, *) {
-                        PhotosPicker("Select Display Image", selection: $displayItem, matching: .images).onChange(of: displayItem) {
-                            Task {
-                                if let loaded = try? await displayItem?.loadTransferable(type: Image.self) {
-                                    recipe.image = loaded
-                                } else {
-                                    print("Failed")
+                
+                Section {
+                    HStack {
+                        Text("Title").padding(.trailing)
+                        Spacer()
+                        TextField("Title", text: $recipe.title).onAppear {
+                            UITextField.appearance().clearButtonMode = .whileEditing
+                        }
+                    }
+                } header: {
+                    VStack{
+                        if #available(iOS 17.0, *) {
+                            PhotosPicker("Select Display Image", selection: $displayItem, matching: .images).onChange(of: displayItem) {
+                                Task {
+                                    if let loaded = try? await displayItem?.loadTransferable(type: Image.self) {
+                                        recipe.image = loaded
+                                    } else {
+                                        print("Failed to load image")
+                                    }
                                 }
                             }
+                        } else {
+                            // Fallback on earlier versions
                         }
-                    } else {
-                        // Fallback on earlier versions
-                    }
-                    recipe.image.resizable().scaledToFit().frame(height: 200)
-                }
-                HStack {
-                    Text("Title").padding(.trailing)
-                    Spacer()
-                    TextField("Title", text: $recipe.title).onAppear {
-                        UITextField.appearance().clearButtonMode = .whileEditing
+                        recipe.image.resizable().scaledToFill().frame(width: UIScreen.main.bounds.width).padding(.bottom, 20).clipShape(RoundedRectangle(cornerRadius: 10))
                     }
                 }
+
                 
                 VStack(alignment: .leading) {
                     Text("Description").font(.headline)
@@ -117,8 +122,13 @@ struct AddEditRecipe: View {
                                     
                 }
                 Picker("Category", selection: $recipe.category) {
-                    ForEach(dataStore.categories, id: \.self) { category in
-                        Text(category.capitalized)
+                    let categories = dataStore.categories + [""]
+                    ForEach(categories, id: \.self) { category in
+                        if(category == ""){
+                            Text("Unassigned")
+                        } else {
+                            Text(category.capitalized)
+                        }
                     }
                 }.pickerStyle(.menu)
                 HStack {
@@ -157,16 +167,7 @@ struct AddEditRecipe: View {
                         Spacer()
                         Image(systemName: "plus.circle").foregroundStyle(.blue)
                         Button("Add Ingredient") {  
-                            showAddIngredient = true
-                        }.alert("Add Ingredient", isPresented: $showAddIngredient) {
-                            TextField("Ingredient", text: $newItem)
-                            Button("Cancel", role: .cancel) {
-                                newItem = ""
-                            }
-                            Button("OK") {
-                                recipe.ingredients.append(Ingredient(title: newItem))
-                                newItem = ""
-                            }
+                            recipe.ingredients.append(Ingredient(title: ""))
                         }
                         Spacer()
                     }
@@ -189,18 +190,9 @@ struct AddEditRecipe: View {
                         Spacer()
                         Image(systemName: "plus.circle").foregroundStyle(.blue)
                         Button("Add Direction") {
-                            showAddDirection = true
-                        }.alert("Add Direction", isPresented: $showAddDirection) {
-                            TextField("Direction", text: $newItem)
-                            Button("Cancel", role: .cancel) {
-                                newItem = ""
-                            }
-                            Button("OK") {
-                                let newDirection = Direction(title: newItem)
-                                recipe.directionsMap[newDirection.id] = []
-                                recipe.directions.append(newDirection)
-                                newItem = ""
-                            }
+                            let newDirection = Direction(title: "")
+                            recipe.directionsMap[newDirection.id] = []
+                            recipe.directions.append(newDirection)
                         }
                         Spacer()
                     }
@@ -256,7 +248,7 @@ struct DirectionRow: View {
                     Image(systemName: "circle.fill").foregroundStyle(.blue)
                     Text((index + 1).formatted()).font(.caption).fontWeight(.bold).foregroundStyle(.white)
                 }.padding(.trailing)
-                TextField("Ingredient", text: $direction.title).onAppear {
+                TextField("Direction", text: $direction.title).onAppear {
                     UITextField.appearance().clearButtonMode = .whileEditing
                 }
 
