@@ -92,7 +92,7 @@ struct DirectionTab: View {
     let direction: Direction
     let ingredients: [Ingredient]
     let directionCount: Int
-    @State var selection = 1
+    @Binding var selectedView: Int
     @Binding var selectedTab: Int
     @EnvironmentObject private var settings: SettingsStore
     @Environment(\.colorScheme) var colorScheme
@@ -100,7 +100,7 @@ struct DirectionTab: View {
     var body: some View {
         let selectedFont = Font(UIFont(name: settings.fontFamily, size: settings.fontSize) ?? UIFont.systemFont(ofSize: settings.fontSize))
         GeometryReader { proxy in
-            TabView(selection: $selection) {
+            TabView(selection: $selectedView) {
                         TimerView().rotationEffect(.degrees(-90)) // Rotate content
                             .frame(
                                 width: proxy.size.width,
@@ -112,7 +112,7 @@ struct DirectionTab: View {
                     Color.white.frame(width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.width)
                     Text(direction.title).font(selectedFont).rotationEffect(.degrees(-90)) // Rotate content
                         .frame(
-                            width: proxy.size.width,
+                            width: proxy.size.width-120,
                             height: proxy.size.height
                         )
                         .foregroundColor((settings.fontColor == .white) ? (colorScheme == .dark ? .white : .black) : settings.fontColor)
@@ -128,7 +128,7 @@ struct DirectionTab: View {
                     if (!ingredients.isEmpty){
                         VStack{
                             ForEach(ingredients.indices, id: \.self) {ingredient_index in
-                                Text("\(ingredient_index+1). " + ingredients[ingredient_index].title)
+                                Text(ingredients[ingredient_index].title).font(.title3)
                             }
                         }.rotationEffect(.degrees(-90)) // Rotate content
                             .frame(
@@ -154,6 +154,7 @@ struct DirectionTab: View {
 
 struct RecipeViewer: View {
     @State private var selectedTab = 0
+    @State private var selectedView = 1
     @Environment(\.verticalSizeClass) var verticalSizeClass: UserInterfaceSizeClass?
     @Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
 
@@ -180,7 +181,7 @@ struct RecipeViewer: View {
         } else {
             TabView(selection: $selectedTab) {
                 ForEach(recipe.directions.indices, id: \.self) { direction_index in
-                    DirectionTab(direction: recipe.directions[direction_index], ingredients: getRelatedInstructions(direction: recipe.directions[direction_index]), directionCount: recipe.directions.count, selectedTab: $selectedTab)
+                    DirectionTab(direction: recipe.directions[direction_index], ingredients: getRelatedInstructions(direction: recipe.directions[direction_index]), directionCount: recipe.directions.count, selectedView: $selectedView, selectedTab: $selectedTab)
                         .tabItem {
                             Image(systemName: "circle")
                         }
@@ -196,7 +197,6 @@ struct RecipeViewer: View {
 
 struct RecipeViewer_Previews: PreviewProvider {
     static var previews: some View {
-        RecipeViewer(recipe: Recipe(title: ""))
         ContentView()
             .previewInterfaceOrientation(.landscapeRight).environmentObject(DataStore())
     }

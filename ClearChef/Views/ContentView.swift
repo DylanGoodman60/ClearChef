@@ -19,7 +19,6 @@ struct ContentView: View {
     }
     
     func getRecipesForCategory(categoryName: String) -> [Int] {
-        //TODO: Allow category to be nil
         let indicies = recipeStore.recipes.indices.filter { item in
             recipeStore.recipes[item].category == categoryName
         }
