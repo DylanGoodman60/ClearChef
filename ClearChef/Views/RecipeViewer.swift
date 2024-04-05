@@ -94,9 +94,11 @@ struct DirectionTab: View {
     let directionCount: Int
     @State var selection = 1
     @Binding var selectedTab: Int
-    
-    
+    @EnvironmentObject private var settings: SettingsStore
+    @Environment(\.colorScheme) var colorScheme
+
     var body: some View {
+        let selectedFont = Font(UIFont(name: settings.fontFamily, size: settings.fontSize) ?? UIFont.systemFont(ofSize: settings.fontSize))
         GeometryReader { proxy in
             TabView(selection: $selection) {
                         TimerView().rotationEffect(.degrees(-90)) // Rotate content
@@ -108,11 +110,12 @@ struct DirectionTab: View {
                         
                 ZStack {
                     Color.white.frame(width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.width)
-                    Text(direction.title).font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/).rotationEffect(.degrees(-90)) // Rotate content
+                    Text(direction.title).font(selectedFont).rotationEffect(.degrees(-90)) // Rotate content
                         .frame(
                             width: proxy.size.width,
                             height: proxy.size.height
                         )
+                        .foregroundColor((settings.fontColor == .white) ? (colorScheme == .dark ? .white : .black) : settings.fontColor)
                 }.tag(1).onTapGesture(coordinateSpace: .global) { location in
                                 if(location.x < UIScreen.main.bounds.width/2 && selectedTab > 0){
                                     selectedTab -= 1
@@ -133,7 +136,7 @@ struct DirectionTab: View {
                                 height: proxy.size.height
                             ).tag(2)
                     }
-
+                    .onChange(of: )
                     }
                     .frame(
                         width: proxy.size.height, // Height & width swap
